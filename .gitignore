@@ -22,3 +22,4 @@ logs/
 /.plugins/
 /.opencode-skills/
 .DS_Store
+.vercel
