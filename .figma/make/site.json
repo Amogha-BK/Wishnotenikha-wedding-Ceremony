@@ -1,0 +1,17 @@
+{
+  "title": "Javeed & Fareen · Midnight Royal Nikah",
+  "description": "Join Javeed & Fareen for their Midnight Royal Nikah and Reception celebrations. Requesting your gracious presence and duas.",
+  "icons": {
+    "icon": "/favicon.png"
+  },
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  },
+  "openGraph": {
+    "image": "https://wishnote-nikah-midnight-jali.vercel.app/assets/wedding-share-cover-v1.jpg"
+  }
+}
