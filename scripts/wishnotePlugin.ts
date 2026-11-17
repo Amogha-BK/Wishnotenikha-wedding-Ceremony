@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { Plugin } from "vite";
-import { MAX_RECORD_BYTES, validateRecord } from "../src/invitation/schema";
+import { MAX_RECORD_BYTES, validateRecord } from "../src/invitation/schema.ts";
 
 export function wishnotePlugin(): Plugin {
   const editor = process.env.WISHNOTE_EDITOR === "1";
