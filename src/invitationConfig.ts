@@ -22,7 +22,7 @@ export const invitationConfig = {
     brideFullName: "Dr. Shaik Fareen Banu",
     brideQualification: "MBBS",
     groomQualification: "B.E I.T",
-    groomParents: "S/o Mr & Mrs Abbas Nellikavil",
+    groomParents: "S/o Mrs&Mr Abbas Nellikavil",
     brideParents: "D/o Dr. H. Zeenath Banu [AH Dept] and Shaik Sohail Ahmed",
     brideGrandparents: "Grand D/o Late Mrs. Hameeda Banu & P. Mohammed Hanief",
     groomGrandparents: "Grand S/o Late T.K.M Koya & Late Ahmed Kutty",
