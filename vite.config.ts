@@ -93,7 +93,12 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
   // Imported HTML keeps its own favicon. New Makes use PNG because Google Search does not
   // support SVG favicons, even though browsers do.
   const favicon = config.icons?.icon ?? "/favicon.png";
-  const socialImage = config.openGraph?.image ?? "";
+  const deploymentHost = process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
+  const siteUrl = deploymentHost ? `https://${deploymentHost}/` : "/";
+  const configuredImage = config.openGraph?.image ?? "";
+  const socialImage = deploymentHost && configuredImage
+    ? new URL(configuredImage, siteUrl).href
+    : configuredImage;
   const language = sanitizeHtmlValue(config.language) || "en";
   const googleAnalyticsId = sanitizeHtmlValue(config.analytics?.googleAnalyticsId);
   const headStart = config.customScripts?.headStart ?? "";
@@ -168,7 +173,17 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
           tags.push(
             {
               tag: "meta",
+              attrs: { property: "og:url", content: siteUrl },
+              injectTo: "head",
+            },
+            {
+              tag: "meta",
               attrs: { property: "og:image", content: socialImage },
+              injectTo: "head",
+            },
+            {
+              tag: "meta",
+              attrs: { property: "og:image:secure_url", content: socialImage },
               injectTo: "head",
             },
             {
@@ -239,6 +254,15 @@ function figmaSiteConfiguration(config: FigmaSiteConfiguration): Plugin {
             },
           );
         }
+
+        // Replace inherited values so crawlers see one consistent set of metadata.
+        const generatedMeta = new Set(tags
+          .filter((tag) => tag.tag === "meta")
+          .map((tag) => tag.attrs?.property || tag.attrs?.name));
+        result = result.replace(/<meta\b[^>]*>/gi, (tag) => {
+          const key = tag.match(/\b(?:property|name)=["']([^"']+)["']/i)?.[1];
+          return key && generatedMeta.has(key) ? "" : tag;
+        });
 
         return {
           html: result,
