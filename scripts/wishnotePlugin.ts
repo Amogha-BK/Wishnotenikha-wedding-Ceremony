@@ -118,8 +118,8 @@ export function wishnotePlugin(): Plugin {
       // Personalized builds copy only shared template assets and explicitly selected media.
       // Never copy the entire original customer's public directory into a new order.
       const files = new Set([
-        "/assets/envelope-opening-safari.mp4",
-        "/assets/entrance-courtyard-hd.webp",
+        "/assets/envelope-opening-hd-v2.mp4",
+        "/assets/entrance-courtyard-hd-v2.webp",
         "/envelope-poster.jpg",
         "/assets/mehndi-floral-arch-v2.webp",
         "/assets/haldi-floral-arch-v2.webp",

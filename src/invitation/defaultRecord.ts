@@ -34,7 +34,7 @@ export const customerRecord: WeddingRecord = {
   contacts: [...original.contacts],
   optional: { ...original.optional },
   media: {
-    portraitUrl: "/assets/couple-illustration.png",
+    portraitUrl: "/assets/couple-illustration.webp",
     portraitAlt: "Illustrated couple Dr. Shaik Fareen Banu in red bridal outfit and Nellikavil Mohammed Javeed in ivory sherwani",
     venueArtworkUrl: original.artwork,
   },

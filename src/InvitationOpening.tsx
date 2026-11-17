@@ -56,7 +56,7 @@ export function InvitationOpening({
       <video
         ref={videoRef}
         className="envelope-video"
-        src="/assets/envelope-opening-safari.mp4"
+        src="/assets/envelope-opening-hd-v2.mp4"
         poster="/envelope-poster.jpg"
         muted
         playsInline
@@ -81,7 +81,7 @@ export function InvitationOpening({
       />
       <img
         className={`entrance-courtyard ${courtyardReady && courtyardRevealed ? "is-visible" : ""}`}
-        src="/assets/entrance-courtyard-hd.webp"
+        src="/assets/entrance-courtyard-hd-v2.webp"
         alt=""
         aria-hidden="true"
         loading="eager"

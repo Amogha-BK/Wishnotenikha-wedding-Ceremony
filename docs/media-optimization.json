@@ -1,0 +1,107 @@
+{
+  "images": [
+    {
+      "name": "courtyard",
+      "previous": "public/assets/entrance-courtyard-hd.webp",
+      "output": "public/assets/entrance-courtyard-hd-v2.webp",
+      "before": 553646,
+      "after": 328312,
+      "width": 941,
+      "height": 1672,
+      "sourceWidth": 941,
+      "sourceHeight": 1672,
+      "psnr": 36.02187294150308
+    },
+    {
+      "name": "ceremony",
+      "previous": "public/assets/wedding-ceremony-hd.webp",
+      "output": "public/assets/wedding-ceremony-hd-v2.webp",
+      "before": 531456,
+      "after": 398562,
+      "width": 938,
+      "height": 1676,
+      "sourceWidth": 938,
+      "sourceHeight": 1676,
+      "psnr": 35.67270965517118
+    },
+    {
+      "name": "reception",
+      "previous": "public/assets/midnight-jali-decor.jpg",
+      "output": "public/assets/reception-hd.webp",
+      "before": 117604,
+      "after": 141764,
+      "width": 1122,
+      "height": 1402,
+      "sourceWidth": 1122,
+      "sourceHeight": 1402,
+      "psnr": 36.758765196101336
+    },
+    {
+      "name": "poster",
+      "previous": "public/envelope-poster.jpg",
+      "output": "public/envelope-poster.jpg",
+      "before": 227650,
+      "after": 227650,
+      "width": 1080,
+      "height": 1920,
+      "sourceWidth": 1080,
+      "sourceHeight": 1920,
+      "psnr": "original unchanged"
+    },
+    {
+      "name": "portrait",
+      "previous": "public/assets/couple-illustration.png",
+      "output": "public/assets/couple-illustration.webp",
+      "before": 236819,
+      "after": 121110,
+      "width": 375,
+      "height": 533,
+      "sourceWidth": 375,
+      "sourceHeight": 533,
+      "psnr": "lossless; visible pixels verified identical"
+    },
+    {
+      "name": "share-cover",
+      "previous": "public/assets/wedding-share-cover-v2.jpg",
+      "output": "public/assets/wedding-share-cover-v2.jpg",
+      "before": 184390,
+      "after": 136684,
+      "width": 1200,
+      "height": 630
+    }
+  ],
+  "legacy": [
+    {
+      "file": "public/assets/midnight-decor-1.jpg",
+      "before": 533787,
+      "after": 252822,
+      "width": 1480,
+      "height": 1112
+    },
+    {
+      "file": "public/assets/midnight-decor-2.jpg",
+      "before": 681553,
+      "after": 290875,
+      "width": 938,
+      "height": 1402
+    },
+    {
+      "file": "public/assets/wedding-share-cover-v1.jpg",
+      "before": 79096,
+      "after": 74092,
+      "width": 1200,
+      "height": 630
+    }
+  ],
+  "video": {
+    "crf": 26,
+    "before": 6068980,
+    "after": 3301614,
+    "ssim": 0.984245,
+    "width": 1080,
+    "height": 1920,
+    "fps": 24,
+    "audio": "original AAC stream copied without re-encoding",
+    "fastStart": true
+  }
+}
