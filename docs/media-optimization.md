@@ -1,26 +1,39 @@
 # HD media and compression
 
-The first template's Wedding Ceremony and Reception cards use enhanced artwork. All CSS references to the old 200 × 300 ornament now use the enhanced ceremony image. Updated filenames ensure browsers request the new assets after deployment.
+The opening uses the regenerated video, compressed at its original 1080 × 1920 resolution and 24 fps. It plays through normally, with no courtyard image overlay. Updated filenames ensure browsers request the optimized video and music after deployment.
 
-| Active media | Previous bytes | Optimized bytes | Dimensions |
+| Current asset | Before | Now | Settings |
 | --- | ---: | ---: | --- |
-| `public/assets/envelope-opening-hd-v2.mp4` | 6,068,980 | 3,301,614 | 1080 × 1920, 24 fps |
-| `public/assets/entrance-courtyard-hd-v2.webp` | 553,646 | 328,312 | 941 × 1672 |
-| `public/assets/wedding-ceremony-hd-v2.webp` | 531,456 | 398,562 | 938 × 1676 |
-| `public/assets/couple-illustration.webp` | 236,819 | 121,110 | 375 × 533, lossless visible pixels |
-| `public/assets/wedding-share-cover-v2.jpg` | 184,390 | 136,684 | 1200 × 630 |
+| `public/assets/envelope-opening-hd-v4.mp4` | 8,573,939 bytes | 5,190,490 bytes | H.264, slow preset, CRF 23, yuv420p, fast-start |
+| `public/assets/kudmayi-96k.m4a` | 4,177,638 bytes | 3,213,463 bytes | Stereo AAC, 96 kbps target, fast-start |
 
-`public/assets/reception-hd.webp` is a new 1122 × 1402 enhancement of the 783 × 980 original. It is 141,764 bytes. This higher-resolution replacement is slightly larger than the old 117,604-byte JPEG, while remaining small for its dimensions.
+Together these reduce active media bytes by 4,347,624 (about 31%). The nine active media files, including the social preview, now total 9,760,445 bytes. This is a complete-file total, not a measured initial page transfer; browsers can fetch audio/video in ranges.
 
-The original 1080 × 1920 entrance JPEG poster was retained because tested high-quality re-encodes were larger. Three legacy MP4 paths also contain the compressed video, while the active player uses the new filename. The two earlier HD WebP filenames contain the compressed exports as well.
+The video retains all 119 frames and its 4.958333-second duration. Its unused embedded audio was removed because the opening player is muted and the invitation plays its separate background music. The music retains its full duration (approximately 4 minutes 21 seconds) and stereo channels. Both MP4 containers place playback metadata before media data for progressive playback.
 
-## Encoding and verification
+The 16 previously excluded legacy files have now been deleted from `public/`, removing 15,409,074 bytes of unused source assets. The superseded v3 video and MP3 were also removed after the smaller replacements decoded successfully. The build no longer needs the exclusion list. Exact removed paths and measurements are recorded under `currentDelivery` in `media-optimization.json`; earlier entries are historical measurements.
 
-- Reception restoration: built-in imagegen, with the exact prompt below. Original courtyard and ceremony restoration prompts are in `image-enhancements.md`.
-- Images: Sharp WebP with effort 6 and smart chroma subsampling. Quality 84 for the courtyard, 88 for the ceremony, and 86 for reception. No resizing or interpolation. The couple illustration uses lossless WebP; visible pixels were verified identical after compositing on the invitation paper color. The share cover remains JPEG for social preview compatibility.
-- MP4: FFmpeg/libx264, preset `slow`, CRF 26, High profile, `yuv420p`, and `+faststart`. Resolution and frame rate are unchanged. The original AAC audio stream is copied without re-encoding.
-- The encoded MP4 measures 0.984245 SSIM against the original video. This structural similarity measurement is combined with visual frame inspection and browser playback checks; it does not imply pixel identity.
-- Other large legacy JPEGs were compressed only when the result saved more than 5% at the same dimensions. Full measurements are in `media-optimization.json`.
+## Images retained
+
+| Active image | Bytes | Dimensions |
+| --- | ---: | --- |
+| `public/envelope-poster.jpg` | 227,650 | 1080 × 1920 |
+| `public/assets/entrance-courtyard-hd-v2.webp` | 328,312 | 941 × 1672 |
+| `public/assets/wedding-ceremony-hd-v2.webp` | 398,562 | 938 × 1676 |
+| `public/assets/couple-illustration.webp` | 121,110 | 375 × 533, lossless visible pixels |
+| `public/assets/reception-hd.webp` | 141,764 | 1122 × 1402 |
+| `public/assets/wedding-share-cover-v2.jpg` | 136,684 | 1200 × 630 |
+| `public/favicon.png` | 2,410 | 96 × 96 |
+
+All seven image files remain byte-identical. The poster WebP trial was larger than its JPEG. The courtyard and reception trials offered negligible savings. Compressing the portrait further changed fine details, so the existing lossless WebP remains. The social cover retains JPEG for sharing compatibility.
+
+## Verification
+
+- Both optimized files decoded fully with FFmpeg without errors.
+- ffprobe verified codecs, dimensions, frame rate and durations; MP4 atom inspection verified fast-start metadata.
+- The video measures 0.988494 SSIM against the regenerated source. This structural similarity measurement does not imply pixel identity. A frame comparison at phone viewing size showed preserved fine gold detail; the encode is lossy.
+- Image hashes were checked against the pre-change files.
+- The earlier artwork generation and restoration prompts are recorded in `image-enhancements.md`; its legacy input paths describe historical source files.
 
 ## Final Reception enhancement prompt
 

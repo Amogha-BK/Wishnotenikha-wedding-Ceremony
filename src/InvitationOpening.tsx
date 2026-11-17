@@ -16,8 +16,6 @@ export function InvitationOpening({
   const playbackRequested = useRef(false);
   const [phase, setPhase] = useState<"idle" | "starting" | "playing">("idle");
   const [mediaFailed, setMediaFailed] = useState(false);
-  const [courtyardReady, setCourtyardReady] = useState(false);
-  const [courtyardRevealed, setCourtyardRevealed] = useState(false);
 
   const finishOpening = () => {
     if (finished.current) return;
@@ -28,7 +26,6 @@ export function InvitationOpening({
   const playVideo = () => {
     const video = videoRef.current;
     if (!video || finished.current || playbackRequested.current) return;
-    setCourtyardRevealed(false);
     if (mediaFailed) video.load();
     video.currentTime = 0;
     video.playbackRate = 1;
@@ -56,7 +53,7 @@ export function InvitationOpening({
       <video
         ref={videoRef}
         className="envelope-video"
-        src="/assets/envelope-opening-hd-v2.mp4"
+        src="/assets/envelope-opening-hd-v4.mp4"
         poster="/envelope-poster.jpg"
         muted
         playsInline
@@ -65,28 +62,12 @@ export function InvitationOpening({
         tabIndex={-1}
         aria-label="Wedding invitation opening video"
         onPlaying={() => setPhase("playing")}
-        onTimeUpdate={(event) => {
-          const video = event.currentTarget;
-          // Replace the compressed courtyard once the gate has opened.
-          if (Number.isFinite(video.duration) && video.currentTime >= video.duration - 0.8) {
-            setCourtyardRevealed(true);
-          }
-        }}
         onEnded={finishOpening}
         onError={() => {
           setMediaFailed(true);
           playbackRequested.current = false;
           setPhase("idle");
         }}
-      />
-      <img
-        className={`entrance-courtyard ${courtyardReady && courtyardRevealed ? "is-visible" : ""}`}
-        src="/assets/entrance-courtyard-hd-v2.webp"
-        alt=""
-        aria-hidden="true"
-        loading="eager"
-        decoding="async"
-        onLoad={() => setCourtyardReady(true)}
       />
       {phase !== "playing" && (
         <img

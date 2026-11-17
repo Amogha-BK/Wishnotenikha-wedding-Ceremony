@@ -2219,18 +2219,6 @@ footer .monogram {
   object-position: 50% 52%;
   pointer-events: none;
 }
-.entrance-courtyard {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 52%;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-.entrance-courtyard.is-visible { opacity: 1; }
 .envelope-open-trigger {
   position: absolute;
   inset: 0;

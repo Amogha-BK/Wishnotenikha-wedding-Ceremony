@@ -37,7 +37,6 @@ export const invitationConfig = {
   hosts: "",
   rsvp: "",
   wishesFrom: "Abdul Wahid, Mrs Zahida Banu, Mrs. Zabreena Banu and Shaik Shama Banu",
-  monogram: "/assets/monogram-aa.png",
   artwork: "/assets/entrance-courtyard-hd-v2.webp",
   venue: {
     name: "Aashiana Banquet & Conference",
@@ -49,7 +48,7 @@ export const invitationConfig = {
     travel: "",
     stay: "",
     contact: "",
-    musicUrl: "/assets/kudmayi.mp3",
+    musicUrl: "/assets/kudmayi-96k.m4a",
     whatsappHostNumber: "",
   },
   celebrations: [

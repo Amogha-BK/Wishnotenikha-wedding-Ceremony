@@ -103,5 +103,59 @@
     "fps": 24,
     "audio": "original AAC stream copied without re-encoding",
     "fastStart": true
+  },
+  "currentDelivery": {
+    "video": {
+      "path": "public/assets/envelope-opening-hd-v4.mp4",
+      "beforeBytes": 8573939,
+      "afterBytes": 5190490,
+      "codec": "H.264",
+      "preset": "slow",
+      "crf": 23,
+      "width": 1080,
+      "height": 1920,
+      "fps": 24,
+      "frames": 119,
+      "durationSeconds": 4.958333,
+      "ssim": 0.988494,
+      "fastStart": true,
+      "audio": "Removed unused embedded audio; opening player is muted and separate music plays."
+    },
+    "music": {
+      "path": "public/assets/kudmayi-96k.m4a",
+      "beforeBytes": 4177638,
+      "afterBytes": 3213463,
+      "codec": "AAC",
+      "bitrateTarget": 96000,
+      "channels": 2,
+      "durationSeconds": 261.038005,
+      "fastStart": true
+    },
+    "removedUnusedFiles": [
+      "assets/couple-illustration.png",
+      "assets/entrance-courtyard-hd.webp",
+      "assets/envelope-opening-hd-v2.mp4",
+      "assets/envelope-opening-safari.mp4",
+      "assets/envelope-opening.mp4",
+      "assets/envelope-poster.jpg",
+      "assets/hero-bg-endframe.jpg",
+      "assets/midnight-decor-1.jpg",
+      "assets/midnight-decor-2.jpg",
+      "assets/midnight-jali-decor.jpg",
+      "assets/midnight-jali-motif-1.jpg",
+      "assets/monogram-aa.png",
+      "assets/wedding-ceremony-hd.webp",
+      "assets/wedding-share-cover-v1.jpg",
+      "envelope-end.jpg",
+      "envelope-open.mp4"
+    ],
+    "removedUnusedBytes": 15409074,
+    "supersededFilesRemoved": [
+      "assets/envelope-opening-hd-v3.mp4",
+      "assets/kudmayi.mp3"
+    ],
+    "activeMediaBytesBefore": 14108069,
+    "activeMediaBytesAfter": 9760445,
+    "verification": "Full video and audio decoded without errors; video SSIM compared against source. All seven image files remain byte-identical."
   }
 }
