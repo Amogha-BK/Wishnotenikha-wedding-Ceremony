@@ -6,6 +6,7 @@ export type WeddingEvent = {
   shortName: string;
   title: string;
   start: string;
+  timeLabel?: string;
   venue?: string;
   address?: string;
   mapUrl?: string;
@@ -27,7 +28,10 @@ export type WeddingRecord = {
     second: string;
     groomFullName?: string;
     brideFullName?: string;
+    brideQualification?: string;
+    groomQualification?: string;
     brideParents: string;
+    brideGrandparents?: string;
     groomParents: string;
     groomGrandparents: string;
   };
@@ -214,7 +218,7 @@ export function validateRecord(value: unknown): WeddingRecord {
     const start = text(e, "start", path, true);
     if (!isIndiaDateTime(start))
       issues.push({ path: `${path}start`, message: "Choose a real date and time in IST." });
-    if (id === "wedding" && start.slice(0, 10) !== date)
+    if ((id === "wedding" || id === "nikah") && start.slice(0, 10) !== date)
       issues.push({
         path: `${path}start`,
         message: "Wedding function date must match the wedding date.",
@@ -227,6 +231,7 @@ export function validateRecord(value: unknown): WeddingRecord {
     return {
       id: id as EventKind,
       start,
+      timeLabel: typeof e.timeLabel === "string" ? text(e, "timeLabel", path, false, 120) : undefined,
       shortName: text(e, "shortName", path, true, 120),
       title: text(e, "title", path, true, 200),
       venue: ev,
@@ -238,7 +243,7 @@ export function validateRecord(value: unknown): WeddingRecord {
       phereTime: text(e, "phereTime", path),
     };
   });
-  if (!seen.has("wedding"))
+  if (!seen.has("wedding") && !seen.has("nikah"))
     issues.push({ path: "celebrations", message: "A wedding function is required." });
   const contacts = Array.isArray(root.contacts)
     ? root.contacts.filter((v) => v !== "")
@@ -271,7 +276,12 @@ export function validateRecord(value: unknown): WeddingRecord {
     couple: {
       first: text(couple, "first", "couple.", true, 80),
       second: text(couple, "second", "couple.", true, 80),
+      brideFullName: text(couple, "brideFullName", "couple.", false, 200),
+      groomFullName: text(couple, "groomFullName", "couple.", false, 200),
+      brideQualification: text(couple, "brideQualification", "couple.", false, 80),
+      groomQualification: text(couple, "groomQualification", "couple.", false, 80),
       brideParents: text(couple, "brideParents", "couple."),
+      brideGrandparents: text(couple, "brideGrandparents", "couple."),
       groomParents: text(couple, "groomParents", "couple."),
       groomGrandparents: text(couple, "groomGrandparents", "couple."),
     },
@@ -378,7 +388,8 @@ export function toTemplateConfig(record: WeddingRecord) {
     celebrations: record.celebrations.map((e) => ({
       ...e,
       dateLabel: `${dateParts(e.start).weekday}, ${dateParts(e.start).full}`,
-      timeLabel: timeLabel(e.start),
+      hasExactTime: e.start.slice(11, 19) !== "00:00:00",
+      timeLabel: e.timeLabel ?? (e.start.slice(11, 19) === "00:00:00" ? "" : timeLabel(e.start)),
       calendarTitle: `${record.couple.first} & ${record.couple.second} · ${e.shortName}`,
     })),
   };

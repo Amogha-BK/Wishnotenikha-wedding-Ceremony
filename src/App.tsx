@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import qrcode from "qrcode-generator";
 import {
   CalendarPlus,
   Clock,
@@ -38,7 +39,7 @@ const indiaClock = new Intl.DateTimeFormat("en-GB", {
 });
 
 const navItems = [
-  ["Royal Nikah", "our-wedding"],
+  ["Our Nikah", "our-wedding"],
   ["Save The Date", "countdown"],
   ["Celebrations", "celebrations"],
   ["Blessings", "blessings"],
@@ -259,7 +260,7 @@ function Countdown() {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
-  const remaining = getCountdownParts(config.countdownTarget, now);
+  const remaining = getCountdownParts(Date.parse(config.countdownTarget), now);
   const values = [
     ["Days", remaining.days],
     ["Hours", remaining.hours],
@@ -321,7 +322,11 @@ function getGoogleCalendarUrl(event: Celebration) {
     const startDate = new Date(event.start);
     const endDate = new Date(startDate.getTime() + 4 * 60 * 60 * 1000);
     const formatTime = (d: Date) => d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-    const dates = `${formatTime(startDate)}/${formatTime(endDate)}`;
+    // The PDF gives prayer-relative timing, so avoid inventing a precise calendar time.
+    const nextDay = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
+    const dates = event.hasExactTime
+      ? `${formatTime(startDate)}/${formatTime(endDate)}`
+      : `${event.start.slice(0, 10).replace(/-/g, "")}/${nextDay.toLocaleDateString("en-CA", { timeZone: timezone }).replace(/-/g, "")}`;
     const title = encodeURIComponent(event.calendarTitle || event.title);
     const details = encodeURIComponent(
       `${event.title}\n${event.supportingLine}${event.venue ? `\nVenue: ${event.venue}` : ""}`,
@@ -333,8 +338,35 @@ function getGoogleCalendarUrl(event: Celebration) {
   }
 }
 
+function VenueQr({ href }: { href: string }) {
+  const code = useMemo(() => {
+    const qr = qrcode(0, "M");
+    qr.addData(href);
+    qr.make();
+    const size = qr.getModuleCount();
+    const cells: string[] = [];
+    for (let row = 0; row < size; row++) {
+      for (let col = 0; col < size; col++) {
+        if (qr.isDark(row, col)) cells.push(`M${col + 4},${row + 4}h1v1h-1z`);
+      }
+    }
+    return { path: cells.join(""), size: size + 8 };
+  }, [href]);
+  return (
+    <a className="venue-qr focus-ring" href={href} target="_blank" rel="noreferrer">
+      <svg viewBox={`0 0 ${code.size} ${code.size}`} width="180" height="180" role="img"
+        aria-label="QR code for the wedding venue on Google Maps" shapeRendering="crispEdges">
+        <rect width={code.size} height={code.size} fill="#fff" />
+        <path d={code.path} fill="#000" />
+      </svg>
+      <span>Scan for Google Maps</span>
+    </a>
+  );
+}
+
 function EventCard({ event, index }: { event: Celebration; index: number }) {
   const reducedMotion = useReducedMotion();
+  const isReception = event.id === "reception";
   const subtitle = event.title.includes(" — ") ? event.title.split(" — ")[1] : event.title;
   const hasTime = Boolean(event.timeLabel && event.timeLabel.trim());
   const hasVenue = Boolean(event.venue && event.venue.trim());
@@ -356,7 +388,7 @@ function EventCard({ event, index }: { event: Celebration; index: number }) {
           Royal Ceremony {String(index + 1).padStart(2, "0")}
         </span>
         <h3>{event.shortName}</h3>
-        <p className="function-card-subtitle">{subtitle}</p>
+        {subtitle !== event.shortName && <p className="function-card-subtitle">{subtitle}</p>}
       </div>
       <div className="function-card-details">
         <p className="function-card-date-line">
@@ -366,7 +398,7 @@ function EventCard({ event, index }: { event: Celebration; index: number }) {
           <p className="function-card-time">
             <Clock size={19} aria-hidden="true" />
             <strong>{event.timeLabel}</strong>
-            <span>IST</span>
+            {event.hasExactTime && <span>IST</span>}
           </p>
         )}
         {hasVenue && (
@@ -376,7 +408,7 @@ function EventCard({ event, index }: { event: Celebration; index: number }) {
             {event.address && <p>{event.address}</p>}
           </div>
         )}
-        <p className="event-description">{event.supportingLine}</p>
+        {event.supportingLine && <p className="event-description">{event.supportingLine}</p>}
         <div className="event-actions">
           {hasVenue && event.mapUrl && (
             <a
@@ -388,7 +420,7 @@ function EventCard({ event, index }: { event: Celebration; index: number }) {
               <NavigationIcon size={18} aria-hidden="true" /> Get directions
             </a>
           )}
-          <a
+          {!isReception && <a
             className="calendar-link midnight-cal-link focus-ring"
             href={getGoogleCalendarUrl(event)}
             target="_blank"
@@ -396,8 +428,9 @@ function EventCard({ event, index }: { event: Celebration; index: number }) {
             aria-label={`Add ${event.shortName} to your calendar`}
           >
             <CalendarPlus size={19} aria-hidden="true" /> Add to calendar
-          </a>
+          </a>}
         </div>
+        {!isReception && hasVenue && event.mapUrl && <VenueQr href={event.mapUrl} />}
       </div>
       <div className="ceremony-footer-art" aria-hidden="true">
         <img src={event.image} alt="" loading="lazy" decoding="async" />
@@ -498,19 +531,13 @@ export default function App() {
             }}
           >
             <SparkleField variant="hero" active={opened} />
-            <div className="hero-editorial-topline midnight-topline">
-              <span>Midnight Royal Luxury Nikah</span>
-              <span>January 2027</span>
-            </div>
-
             <div className="hero-editorial-grid">
               <div className="hero-portrait-column">
                 <div className="hero-portrait-caption">
-                  <span className="text-[#d4af37]">Royal Matrimony</span>
-                  <i style={{ background: "#d4af37" }} /> <span>Blessed Union</span>
+                  <span>Blessed Union</span>
                 </div>
                 <CouplePortrait className="hero-couple" animate={false} />
-                <p className="hero-art-caption text-[#e2d6b5]">Dr. Shaik Fareen Banu &amp; Nellikavil Mohammed Javeed</p>
+                <p className="hero-art-caption text-[#e2d6b5]">{config.couple.brideFullName} &amp; {config.couple.groomFullName}</p>
               </div>
 
               <div className="hero-inner midnight-hero-inner">
@@ -521,7 +548,7 @@ export default function App() {
                 <h1 ref={invitationHeading} tabIndex={-1}>
                   <span className="hero-name text-[#faf7ee]">{config.couple.first}</span>
                   <span className="hero-ampersand text-[#d4af37]">&amp;</span>
-                  <span className="hero-name text-[#faf7ee]">{config.couple.second}</span>
+                  <span className="hero-name hero-groom-name text-[#faf7ee]">{config.couple.second}</span>
                 </h1>
                 <p className="hero-invitation-line text-[#e8dfc8]">
                   {config.wording.heroMessage}
@@ -529,7 +556,6 @@ export default function App() {
                 <div className="hero-date midnight-hero-date">
                   <span>{config.display.wedding.weekday}</span>
                   <time dateTime={config.weddingDate}>{config.display.wedding.full}</time>
-                  <span className="provisional-pill midnight-pill">Provisional Date</span>
                 </div>
                 <a className="button button-solid midnight-gold-btn focus-ring" href="#celebrations">
                   Explore the celebrations <ArrowDown size={18} aria-hidden="true" />
@@ -552,6 +578,7 @@ export default function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.1 }}
             >
+              <Monogram className="family-monogram" />
               <p className="arabic-bismillah-small text-[#d4af37]" dir="rtl" lang="ar">
                 بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
               </p>
@@ -561,25 +588,29 @@ export default function App() {
 
               <div className="invitation-families midnight-families" aria-label="The couple">
                 <div className="formal-name-card midnight-name-card">
-                  <span className="formal-role text-[#d4af37]">Groom</span>
-                  <h2>{config.couple.groomFullName || "Nellikavil Mohammed Javeed"}</h2>
+                  <span className="formal-role text-[#d4af37]">Bride</span>
+                  <h2>{config.couple.brideFullName || config.couple.first}</h2>
+                  {config.couple.brideQualification && <p className="formal-qualification">{config.couple.brideQualification}</p>}
+                  {config.couple.brideParents && <p>{config.couple.brideParents}</p>}
+                  {config.couple.brideGrandparents && <p>{config.couple.brideGrandparents}</p>}
                 </div>
                 <span className="family-weds text-[#d4af37]">and</span>
                 <div className="formal-name-card midnight-name-card">
-                  <span className="formal-role text-[#d4af37]">Bride</span>
-                  <h2>{config.couple.brideFullName || "Dr. Shaik Fareen Banu"}</h2>
+                  <span className="formal-role text-[#d4af37]">Groom</span>
+                  <h2>{config.couple.groomFullName || config.couple.second}</h2>
+                  {config.couple.groomQualification && <p className="formal-qualification">{config.couple.groomQualification}</p>}
+                  {config.couple.groomParents && <p>{config.couple.groomParents}</p>}
+                  {config.couple.groomGrandparents && <p>{config.couple.groomGrandparents}</p>}
                 </div>
               </div>
 
               <p className="invitation-main-paragraph">
-                Request the honour of your presence and warm duas as they celebrate the auspicious occasion of their Nikah and begin a lifetime of shared love, harmony, and grace.
+                {config.invitationLine}
               </p>
 
               <p className="family-blessing text-[#f3e5ab] italic">
                 "May Allah bless this union and shower His blessings upon you both, and unite you in goodness."
               </p>
-
-              <Monogram />
             </motion.div>
           </section>
 
@@ -614,42 +645,22 @@ export default function App() {
             </div>
           </section>
 
-          {/* Section 6 — Mughal Heritage Gallery */}
-          <section className="gallery-section midnight-gallery-section" id="gallery">
-            <SectionHeading eyebrow="Heritage &amp; Splendor">Starry Midnight Architecture & Jali</SectionHeading>
-            <div className="gallery-showcase">
-              <div className="gallery-card primary-card midnight-card">
-                <img src="/assets/hero-bg-endframe.jpg" alt="Mughal Heritage Door Courtyard" loading="lazy" />
-                <div className="gallery-card-caption">
-                  <span>The Heritage Courtyard</span>
-                </div>
-              </div>
-              <div className="gallery-card midnight-card">
-                <img src="/assets/midnight-jali-decor.jpg" alt="Midnight Jali Pavilion" loading="lazy" />
-                <div className="gallery-card-caption">
-                  <span>Midnight Jali Colonnade</span>
-                </div>
-              </div>
-              <div className="gallery-card midnight-card">
-                <img src="/assets/midnight-arch-decor.jpg" alt="Starry Night Floral Pavilion" loading="lazy" />
-                <div className="gallery-card-caption">
-                  <span>Ornate Midnight Gold Pavilion</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
           {/* Section 7 — Closing Blessings */}
           <footer id="blessings" className="site-footer midnight-site-footer">
             <div className="closing-copy">
               <Monogram />
               <SectionHeading eyebrow="With Warmth &amp; Gratitude">Closing Blessings</SectionHeading>
               <p className="closing-message text-[#e2d6b5]">
-                "We look forward to celebrating this special occasion with you. Your presence and blessings will make our celebration complete."
+                {config.wording.closingNote}
               </p>
               <p className="closing-couple-names text-[#d4af37]">
-                Javeed &amp; Fareen
+                {config.couple.first} &amp; {config.couple.second}
               </p>
+              {config.wishesFrom && <div className="closing-wishes">
+                <h3>Best Wishes</h3>
+                <p>{config.wishesFrom}</p>
+                {config.homeAddress && <p>{config.homeAddress}</p>}
+              </div>}
               <div className="closing-rule" aria-hidden="true" style={{ background: "rgba(212, 175, 55, 0.4)" }} />
               <div className="closing-navigation">
                 <a className="back-to-top text-[#d4af37] focus-ring" href="#our-wedding">
