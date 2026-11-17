@@ -384,9 +384,6 @@ function EventCard({ event, index }: { event: Celebration; index: number }) {
         <div className="ceremony-heading-art" aria-hidden="true">
           <img src={event.image} alt="" loading="lazy" decoding="async" />
         </div>
-        <span className="function-card-event-badge midnight-badge">
-          Royal Ceremony {String(index + 1).padStart(2, "0")}
-        </span>
         <h3>{event.shortName}</h3>
         {subtitle !== event.shortName && <p className="function-card-subtitle">{subtitle}</p>}
       </div>
