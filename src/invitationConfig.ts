@@ -38,7 +38,7 @@ export const invitationConfig = {
   rsvp: "",
   wishesFrom: "Abdul Wahid, Mrs Zahida Banu, Mrs. Zabreena Banu and Shaik Shama Banu",
   monogram: "/assets/monogram-aa.png",
-  artwork: "/assets/hero-bg-endframe.jpg",
+  artwork: "/assets/entrance-courtyard-hd.webp",
   venue: {
     name: "Aashiana Banquet & Conference",
     address: "Road No. 1, Banjara Hills, Hyderabad – 500034",
@@ -64,7 +64,7 @@ export const invitationConfig = {
       supportingLine: "Nikah after Maghrib, followed by dinner.",
       start: "2027-01-09T00:00:00+05:30",
       calendarTitle: "Javeed & Fareen · Nikah Ceremony",
-      image: "/assets/midnight-jali-motif-1.jpg",
+      image: "/assets/wedding-ceremony-hd.webp",
       scene: "candlelight",
       mapUrl: "https://www.google.com/maps/search/?api=1&query=Aashiana+Banquet+%26+Conference+Road+No.+1+Banjara+Hills+Hyderabad+500034",
     },

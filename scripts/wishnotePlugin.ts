@@ -119,6 +119,7 @@ export function wishnotePlugin(): Plugin {
       // Never copy the entire original customer's public directory into a new order.
       const files = new Set([
         "/assets/envelope-opening-safari.mp4",
+        "/assets/entrance-courtyard-hd.webp",
         "/envelope-poster.jpg",
         "/assets/mehndi-floral-arch-v2.webp",
         "/assets/haldi-floral-arch-v2.webp",

@@ -522,7 +522,7 @@ export default function App() {
             className={`hero cinematic-hero midnight-hero ${opened ? "hero-is-revealed" : ""}`}
             id="our-wedding"
             style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(8, 18, 37, 0.90), rgba(4, 9, 20, 0.95)), url("/assets/hero-bg-endframe.jpg")`,
+              backgroundImage: `linear-gradient(to bottom, rgba(8, 18, 37, 0.90), rgba(4, 9, 20, 0.95)), url("${config.media.venueArtworkUrl}")`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
