@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1200, initial-scale=1" />
+  <title>Fareen &amp; Javeed · Share cover artwork</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Amiri&family=Cormorant+Garamond:wght@500;600&family=Great+Vibes&family=Manrope:wght@500;600;700&display=swap');
+    * { box-sizing: border-box; }
+    body {
+      width: 1200px; height: 630px; margin: 0; overflow: hidden;
+      background: radial-gradient(ellipse at 45% 35%, #58121e, #30060d 65%, #170104);
+      color: #fce8bd; font-family: 'Manrope', sans-serif;
+    }
+    .frame { position: absolute; inset: 22px; border: 1px solid #d4af37; }
+    .frame::before { content: ''; position: absolute; inset: 7px; border: 1px solid #d4af3755; }
+    .jali {
+      position: absolute; inset: 0; opacity: .2;
+      background: url('../public/assets/midnight-jali-decor.jpg') center top / 600px auto repeat-x;
+      mask-image: linear-gradient(#000, transparent 32%, transparent 80%, #000);
+    }
+    .copy { position: absolute; left: 78px; top: 65px; width: 655px; text-align: center; }
+    .invocation { margin: 0 0 8px; color: #e5c158; font: 30px/1.5 'Amiri', serif; }
+    .eyebrow { color: #e5c158; font-size: 13px; letter-spacing: .28em; text-transform: uppercase; }
+    h1 { margin: 12px 0 16px; font: 400 97px/1.24 'Great Vibes', cursive; }
+    h1 span { display: block; }
+    .ampersand { color: #d4af37; font-size: 39px; line-height: 1; margin: -3px 0 0; }
+    .groom { width: max-content; margin: 0 auto; border: 1px solid #d4af37; border-radius: 50%; padding: 3px 34px 7px; }
+    .message { margin: 0 0 17px; font: italic 500 23px/1.4 'Cormorant Garamond', Georgia, serif; }
+    .date { margin: 0; color: #f3d47b; font: 600 27px/1.4 'Cormorant Garamond', Georgia, serif; }
+    .venue { margin-top: 6px; color: #edd5bd; font-size: 12px; letter-spacing: .04em; }
+    .portrait {
+      position: absolute; right: 70px; top: 66px; width: 330px; height: 502px;
+      border: 1px solid #d4af37; border-radius: 170px 170px 5px 5px;
+      background: linear-gradient(#3d0a1480, #250408e6), url('../public/assets/midnight-jali-decor.jpg') center top / cover;
+      box-shadow: inset 0 0 0 6px #d4af3726, 0 15px 40px #0005;
+    }
+    .inner-arch {
+      position: absolute; inset: 72px 25px 24px; border-radius: 145px 145px 2px 2px;
+      background: linear-gradient(145deg, #fff1bd, #e8d39b); border: 1px solid #d4af37;
+    }
+    .portrait img { position: absolute; bottom: 10px; left: -2px; width: 330px; height: 470px; object-fit: contain; }
+    .star { position: absolute; color: #d4af37; font: 26px Georgia, serif; }
+    .star.one { right: 47px; top: 46px; }
+    .star.two { left: 27px; bottom: 100px; font-size: 19px; }
+  </style>
+</head>
+<body>
+  <div class="jali"></div>
+  <div class="frame"></div>
+  <main class="copy">
+    <p class="invocation" dir="rtl" lang="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+    <div class="eyebrow">Blessed Union</div>
+    <h1><span>Fareen</span><span class="ampersand">&amp;</span><span class="groom">Javeed</span></h1>
+    <p class="message">Together with their families, requesting your presence and duas.</p>
+    <p class="date">Saturday, 9 January 2027 · After Maghrib</p>
+    <p class="venue">Aashiana Banquet &amp; Conference · Hyderabad</p>
+  </main>
+  <div class="portrait">
+    <div class="inner-arch"></div>
+    <img src="../public/assets/couple-illustration.png" alt="Illustrated bride and groom" />
+    <span class="star one">✦</span><span class="star two">✧</span>
+  </div>
+</body>
+</html>
