@@ -1,4 +1,4 @@
-﻿export type Celebration = {
+export type Celebration = {
   id: "nikah" | "reception";
   shortName: string;
   title: string;
