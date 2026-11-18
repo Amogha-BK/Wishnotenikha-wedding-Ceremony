@@ -3741,8 +3741,9 @@ footer .monogram {
 }
 .closing-couple-names {
   font-family: var(--font-script);
-  font-size: 19px;
-  color: #bfa157;
+  font-size: clamp(26px, 7vw, 32px);
+  line-height: 1.35;
+  color: #f3d47b;
   margin-top: 1rem;
 }
 
