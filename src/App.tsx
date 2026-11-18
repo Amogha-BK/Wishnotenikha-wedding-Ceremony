@@ -45,6 +45,12 @@ const navItems = [
   ["Blessings", "blessings"],
 ] as const;
 
+function formatAmpersands(text: string) {
+  return text.split(/(&)/).map((part, index) =>
+    part === "&" ? <span key={index} className="invitation-ampersand">&amp;</span> : part,
+  );
+}
+
 function Monogram({ className = "" }: { className?: string }) {
   const config = useInvitation();
   return (
@@ -54,7 +60,7 @@ function Monogram({ className = "" }: { className?: string }) {
       aria-label={`${config.display.initials.join(" and ")} wedding monogram for ${config.couple.first} and ${config.couple.second}`}
     >
       <span>{config.display.initials[0]}</span>
-      <i>&amp;</i>
+      <span className="monogram-ampersand">&amp;</span>
       <span>{config.display.initials[1]}</span>
     </span>
   );
@@ -229,7 +235,7 @@ function Navigation() {
         aria-label="Home"
         onClick={() => setOpen(false)}
       >
-        {config.display.initials[0]} <span>&</span> {config.display.initials[1]}
+        {config.display.initials[0]} <span className="invitation-ampersand">&amp;</span> {config.display.initials[1]}
       </a>
       <div id="invitation-navigation" className={`nav-links ${open ? "nav-links-open" : ""}`}>
         {navItems.map(([label, id]) => (
@@ -306,7 +312,7 @@ function SectionHeading({ eyebrow, children }: { eyebrow?: string; children: Rea
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
     >
-      {eyebrow && <span>{eyebrow}</span>}
+      {eyebrow && <span>{formatAmpersands(eyebrow)}</span>}
       <h2>{children}</h2>
       <div className="botanical-rule" aria-hidden="true">
         <i style={{ background: "#d4af37" }} />
@@ -401,7 +407,7 @@ function EventCard({ event, index }: { event: Celebration; index: number }) {
         {hasVenue && (
           <div className="function-card-venue-block">
             <MapPin size={22} aria-hidden="true" />
-            <h4>{event.venue}</h4>
+            <h4>{formatAmpersands(event.venue || "")}</h4>
             {event.address && <p>{event.address}</p>}
           </div>
         )}
@@ -534,7 +540,9 @@ export default function App() {
                   <span>Blessed Union</span>
                 </div>
                 <CouplePortrait className="hero-couple" animate={false} />
-                <p className="hero-art-caption text-[#e2d6b5]">{config.couple.brideFullName} &amp; {config.couple.groomFullName}</p>
+                <p className="hero-art-caption text-[#e2d6b5]">
+                  {formatAmpersands(`${config.couple.brideFullName} & ${config.couple.groomFullName}`)}
+                </p>
               </div>
 
               <div className="hero-inner midnight-hero-inner">
@@ -545,7 +553,7 @@ export default function App() {
                 <h1 ref={invitationHeading} tabIndex={-1}>
                   <span className="hero-name text-[#faf7ee]">{config.couple.first}</span>
                   <span className="hero-ampersand text-[#d4af37]">&amp;</span>
-                  <span className="hero-name hero-groom-name text-[#faf7ee]">{config.couple.second}</span>
+                  <span className="hero-name text-[#faf7ee]">{config.couple.second}</span>
                 </h1>
                 <p className="hero-invitation-line text-[#e8dfc8]">
                   {config.wording.heroMessage}
@@ -588,21 +596,21 @@ export default function App() {
                   <span className="formal-role text-[#d4af37]">Bride</span>
                   <h2>{config.couple.brideFullName || config.couple.first}</h2>
                   {config.couple.brideQualification && <p className="formal-qualification">{config.couple.brideQualification}</p>}
-                  {config.couple.brideParents && <p>{config.couple.brideParents}</p>}
-                  {config.couple.brideGrandparents && <p>{config.couple.brideGrandparents}</p>}
+                  {config.couple.brideParents && <p>{formatAmpersands(config.couple.brideParents)}</p>}
+                  {config.couple.brideGrandparents && <p>{formatAmpersands(config.couple.brideGrandparents)}</p>}
                 </div>
                 <span className="family-weds text-[#d4af37]">and</span>
                 <div className="formal-name-card midnight-name-card">
                   <span className="formal-role text-[#d4af37]">Groom</span>
                   <h2>{config.couple.groomFullName || config.couple.second}</h2>
                   {config.couple.groomQualification && <p className="formal-qualification">{config.couple.groomQualification}</p>}
-                  {config.couple.groomParents && <p>{config.couple.groomParents}</p>}
-                  {config.couple.groomGrandparents && <p>{config.couple.groomGrandparents}</p>}
+                  {config.couple.groomParents && <p>{formatAmpersands(config.couple.groomParents)}</p>}
+                  {config.couple.groomGrandparents && <p>{formatAmpersands(config.couple.groomGrandparents)}</p>}
                 </div>
               </div>
 
               <p className="invitation-main-paragraph">
-                {config.invitationLine}
+                {formatAmpersands(config.invitationLine)}
               </p>
 
               <p className="family-blessing text-[#f3e5ab] italic">
@@ -651,7 +659,7 @@ export default function App() {
                 {config.wording.closingNote}
               </p>
               <p className="closing-couple-names text-[#d4af37]">
-                {config.couple.first} &amp; {config.couple.second}
+                {formatAmpersands(`${config.couple.first} & ${config.couple.second}`)}
               </p>
               {config.wishesFrom && <div className="closing-wishes">
                 <h3>Best Wishes</h3>

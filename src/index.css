@@ -137,6 +137,9 @@ textarea:focus-visible {
   color: var(--gold);
   font-family: var(--font-script);
 }
+.invitation-ampersand {
+  font-size: 0.8em;
+}
 .nav-links {
   display: flex;
   align-items: center;
@@ -230,6 +233,7 @@ textarea:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.06em;
   width: 90px;
   height: 90px;
   border: 1px solid var(--gold-light);
@@ -244,10 +248,9 @@ textarea:focus-visible {
   border: 1px solid #d3c48a;
   border-radius: inherit;
 }
-.monogram i {
-  color: var(--gold);
-  font: 28px/1 var(--font-script);
-  margin: 13px -2px 0;
+.monogram-ampersand {
+  color: #f3d47b;
+  font: 0.55em/1.2 var(--font-script);
 }
 .hero-monogram {
   margin: 24px auto;
@@ -1674,9 +1677,9 @@ footer .monogram {
   font-size: 1em;
 }
 .cinematic-hero h1 .hero-ampersand {
-  color: var(--gold);
-  font-size: 0.48em;
-  line-height: 1.05;
+  color: #f3d47b;
+  font-size: 0.42em;
+  line-height: 1.2;
   margin-left: 30%;
   padding-block: 5px;
 }
@@ -1872,7 +1875,6 @@ footer .monogram {
   }
   .cinematic-hero h1 .hero-ampersand {
     margin: 0;
-    font-size: 0.52em;
     padding: 0;
   }
   .cinematic-hero .hero-invitation-line {
@@ -2101,21 +2103,6 @@ footer .monogram {
 .hero-is-revealed .portrait-aura {
   animation: portrait-warmth 9s ease-in-out infinite;
 }
-.cinematic-hero.hero-is-revealed h1 .hero-ampersand {
-  color: transparent;
-  background: linear-gradient(
-    110deg,
-    #8d692e 20%,
-    #b28b40 40%,
-    #e7c77c 49%,
-    #b28b40 58%,
-    #8d692e 80%
-  );
-  background-size: 250% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: gold-letter-lustre 8s 1s ease-in-out infinite;
-}
 @keyframes arch-gold-trace {
   0% {
     opacity: 0;
@@ -2139,16 +2126,6 @@ footer .monogram {
   50% {
     opacity: 1;
     transform: scale(1.04);
-  }
-}
-@keyframes gold-letter-lustre {
-  0%,
-  20% {
-    background-position: 100% 50%;
-  }
-  70%,
-  100% {
-    background-position: 0% 50%;
   }
 }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
@@ -2199,11 +2176,6 @@ footer .monogram {
     display: none;
   }
   .hero-is-revealed .portrait-aura {
-    animation: none;
-  }
-  .cinematic-hero.hero-is-revealed h1 .hero-ampersand {
-    color: var(--gold);
-    background: none;
     animation: none;
   }
 }
@@ -3905,18 +3877,13 @@ footer .monogram {
   border: 1px solid rgba(212, 175, 55, 0.5);
 }
 
-/* Bride-first invitation: clear type, an outlined groom name, and a simple reception note. */
+/* Invitation names and event details. */
 .midnight-hero h1 {
   align-items: flex-start;
   flex-direction: column;
   flex-wrap: nowrap;
   gap: 0.12em;
   line-height: 1.3;
-}
-.midnight-hero h1 .hero-groom-name {
-  padding: 0.14em 0.3em;
-  border: 1px solid #d4af37;
-  border-radius: 50%;
 }
 .midnight-hero .hero-date time {
   border-inline: 0 !important;
