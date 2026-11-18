@@ -896,7 +896,6 @@ footer .monogram {
 .closing-message + p {
   max-width: 650px;
   margin: 12px auto 0;
-  font-size: 18px;
 }
 .family-contacts {
   margin-top: 28px;
@@ -3742,7 +3741,7 @@ footer .monogram {
 }
 .closing-couple-names {
   font-family: var(--font-script);
-  font-size: 2.5rem;
+  font-size: 19px;
   color: #bfa157;
   margin-top: 1rem;
 }
